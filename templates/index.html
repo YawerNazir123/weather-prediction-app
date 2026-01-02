@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Prediction App</title>
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(
+                to bottom,
+                #c9d6ff,
+                #e2e2e2
+            );
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* Cloud animation */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -200px;
+            width: 400px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 100px;
+            animation: clouds 60s linear infinite;
+        }
+
+        @keyframes clouds {
+            from { left: -400px; }
+            to { left: 100%; }
+        }
+
+        .app {
+            background: rgba(255, 255, 255, 0.9);
+            width: 380px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            text-align: center;
+            animation: fadeIn 1.2s ease;
+            z-index: 1;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #5b8cff;
+            box-shadow: 0 0 8px rgba(91,140,255,0.4);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #5b8cff, #3f6cff);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.4s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2e7d32;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .error {
+            margin-top: 15px;
+            color: #d32f2f;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+    <h1>🌥 Weather Predictor</h1>
+
+    <form method="POST" action="/predict">
+        <input type="number" step="any" name="avg_temp"
+               placeholder="Land Average Temperature (°C)" required>
+
+        <input type="number" step="any" name="max_temp"
+               placeholder="Land Max Temperature (°C)" required>
+
+        <input type="number" step="any" name="min_temp"
+               placeholder="Land Min Temperature (°C)" required>
+
+        <button type="submit">Predict Weather</button>
+    </form>
+
+    {% if success %}
+        <div class="result">
+            🌡 Predicted Land & Ocean Avg Temp: {{ result }}
+        </div>
+    {% endif %}
+
+    {% if error %}
+        <div class="error">
+            ⚠ {{ error }}
+        </div>
+    {% endif %}
+</div>
+
+</body>
+</html>
